@@ -1,6 +1,7 @@
 package models
 
 import (
+	"smartpatrol/app/role"
 	"smartpatrol/app/users"
 	"time"
 )
@@ -48,6 +49,20 @@ type SecurityAccount struct {
 	Password  string    `gorm:"type:varchar(255)" json:"password"`
 }
 
+// func (sa *SecurityAccount) ToResponse() users.UserResponse {
+
+// 	return users.UserResponse{
+// 		ID:             sa.ID,
+// 		IsActive:       sa.IsActive,
+// 		ema:      su.AccountID,
+// 		RoleID:         su.RoleID,
+// 		CompanyAreaID:  su.CompanyAreaID,
+// 		CompanyShiftID: su.CompanyShiftID,
+// 		EmployeeID:     su.EmployeeID,
+// 		Name:           su.Name,
+// 	}
+// }
+
 type SecurityRole struct {
 	ID          int       `json:"id" gorm:"primaryKey;not null"`
 	Created     time.Time `json:"created" gorm:"autoCreateTime"`
@@ -57,6 +72,15 @@ type SecurityRole struct {
 	IsActive    int       `json:"is_active"`
 	Name        string    `gorm:"type:varchar(255)" json:"name"`
 	Description string    `gorm:"type:varchar(200)" json:"description"`
+}
+
+func (sr *SecurityRole) ToResponse() role.RoleResponse {
+	return role.RoleResponse{
+		ID: sr.ID,
+		IsActive: sr.IsActive,
+		Name: sr.Name,
+		Description: sr.Description,
+	}
 }
 
 type SecurityPermission struct {

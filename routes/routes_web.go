@@ -28,6 +28,7 @@ func WebInit(g *echo.Group) {
 	handlers.WebAuthHandler().WebRoute(g.Group("/web/auth"))
 	handlers.WebCompanyHandler().WebRoute(g.Group("/web/company"))
 	handlers.WebUsersHandler().WebRoute(g.Group("/web/user"))
+	handlers.WebRoleHandler().WebRoute(g.Group("/web/role"))
 	// handlers.WebUserHandler().WebRoute(g.Group("/web/user"))
 	// handlers.WebHandlerApproval().WebRoute(g.Group("/web/approval"))
 	// handlers.WebUplaodHandler().WebRoute(g.Group("/web/upload"))
