@@ -29,7 +29,7 @@ func (co *controllerImpl) GetAllUser(c echo.Context) error {
 		return response.ErrorResponse(c, err)
 	}
 
-	return response.SuccessResponse(c, http.StatusOK, "Success Get All Users Active", result)
+	return response.SuccessResponse(c, http.StatusOK, "Success Get All Users", result)
 }
 
 func (co *controllerImpl) GetUserByID(c echo.Context) error {

@@ -8,6 +8,7 @@ import (
 )
 
 type Response struct {
+	Status  int         `json:"status"`
 	Success bool        `json:"success" default:"true"`
 	Message string      `json:"message" default:"OK"`
 	Error   interface{} `json:"error"`
@@ -97,6 +98,7 @@ func BuildError(err ErrorConstant, msg error) error {
 func BuildCustomError(code int, message string) error {
 	return &ErrorConstant{
 		Response: Response{
+			Status: code,
 			Success: false,
 			Message: message,
 		},
@@ -108,6 +110,7 @@ func BuildCustomError(code int, message string) error {
 func BuildCustomErrorWithData(code int, message string, data interface{}) error {
 	return &ErrorConstant{
 		Response: Response{
+			Status: code,
 			Success: false,
 			Message: message,
 			Data:    data,
@@ -119,6 +122,7 @@ func BuildCustomErrorWithData(code int, message string, data interface{}) error 
 
 func SuccessResponse(c echo.Context, code int, msg string, data interface{}) error {
 	response := Response{
+		Status: code,
 		Success: true,
 		Message: msg,
 		Data:    data,
@@ -128,6 +132,7 @@ func SuccessResponse(c echo.Context, code int, msg string, data interface{}) err
 
 func InvalidResponse(c echo.Context, code int, msg string, m interface{}, data interface{}) error {
 	response := Response{
+		Status: code,
 		Success: false,
 		Message: msg,
 		Error:   m,

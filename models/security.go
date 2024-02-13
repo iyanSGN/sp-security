@@ -19,19 +19,21 @@ type SecurityUser struct {
 	EmployeeID     string    `gorm:"type:varchar(255)" json:"employee_id"`
 	Name           string    `gorm:"type:varchar(255)" json:"name"`
 
-	Account SecurityAccount `gorm:"foreignKey:AccountID"`
+	Account SecurityAccount `json:"account" gorm:"foreignKey:AccountID"`
 }
 
-func (ms *SecurityUser) ToResponse() users.UserResponse {
+
+func (su *SecurityUser) ToResponse() users.UserResponse {
+
 	return users.UserResponse{
-		ID:             ms.ID,
-		IsActive:       ms.IsActive,
-		AccountID:      ms.AccountID,
-		RoleID:         ms.RoleID,
-		CompanyAreaID:  ms.CompanyAreaID,
-		CompanyShiftID: ms.CompanyShiftID,
-		EmployeeID:     ms.EmployeeID,
-		Name:           ms.Name,
+		ID:             su.ID,
+		IsActive:       su.IsActive,
+		AccountID:      su.AccountID,
+		RoleID:         su.RoleID,
+		CompanyAreaID:  su.CompanyAreaID,
+		CompanyShiftID: su.CompanyShiftID,
+		EmployeeID:     su.EmployeeID,
+		Name:           su.Name,
 	}
 }
 

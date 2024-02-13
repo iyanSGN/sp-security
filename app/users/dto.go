@@ -3,6 +3,7 @@ package users
 type UserRequest struct {
 	ID             int    `json:"id" gorm:"primaryKey;not null"`
 	CreatedBy      int    `json:"createdBy"`
+	UpdatedBy      int    `json:"updatedBy"`
 	IsActive       int    `json:"is_active"`
 	AccountID      int   `json:"account_id"`
 	RoleID         int   `json:"role_id"`

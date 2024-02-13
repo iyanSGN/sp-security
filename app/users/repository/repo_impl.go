@@ -27,14 +27,14 @@ func (*repositoryImpl) GetAllUser(c echo.Context, db *gorm.DB) ([]models.Securit
 }
 
 func (*repositoryImpl) GetUserByID(c echo.Context, db *gorm.DB, id int) (models.SecurityUser, error) {
-	var role models.SecurityUser
+	var user models.SecurityUser
 
 	if err := db.Where("id", id).
-		Find(&role).Error; err != nil {
-		return role, err
+		Find(&user).Error; err != nil {
+		return user, err
 	}
 
-	return role, nil
+	return user, nil
 }
 
 func CreateUser(new users.UserRequest) (users.UserRequest, error) {
@@ -56,19 +56,6 @@ func CreateUser(new users.UserRequest) (users.UserRequest, error) {
 		return users.UserRequest{}, fmt.Errorf("error creating user: %w", result.Error)
 	}
 
-	newAccount := models.SecurityAccount{
-		ID: newUser.ID,
-		CreatedBy: new.CreatedBy,
-		IsActive: new.IsActive,
-		Email: new.Email,
-		Password: new.Password,
-	}
-
-	resultAccount := db.Create(&newAccount)
-	if resultAccount.Error != nil {
-		return new, fmt.Errorf("error creating account: %w", resultAccount.Error)
-	}
-
 	return new, nil
 }
 
@@ -76,10 +63,14 @@ func UpdateUser(id int, update users.UserRequest) error {
 	db := database.DBManager()
 
 	var users models.SecurityUser
-	result := db.First(&users, id)
 
+	result := db.Preload("Account").First(&users, id)
 	if result.Error != nil {
 		return fmt.Errorf("error retrieving existing user: %w", result.Error)
+	}
+
+	if update.UpdatedBy != 0 {
+		users.UpdatedBy = update.UpdatedBy
 	}
 
 	if update.Name != "" {
@@ -115,11 +106,11 @@ func UpdateUser(id int, update users.UserRequest) error {
 
 }
 
-
 func DeleteUser(id int) error {
 	db := database.DBManager()
 
 	var userID models.SecurityUser
+
 	result := db.First(&userID, id)
 	if result.Error != nil {
 		return fmt.Errorf("error deleting selected user: %w", result.Error)
