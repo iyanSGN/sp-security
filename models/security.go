@@ -1,6 +1,7 @@
 package models
 
 import (
+	menuaccess "smartpatrol/app/menuAccess"
 	"smartpatrol/app/role"
 	"smartpatrol/app/users"
 	"time"
@@ -93,6 +94,16 @@ type SecurityPermission struct {
 	Code        string    `gorm:"type:varchar(200)" json:"code"`
 	Name        string    `gorm:"type:varchar(255)" json:"name"`
 	Description string    `gorm:"type:varchar(200)" json:"description"`
+}
+
+func (sp *SecurityPermission) ToResponse() menuaccess.MenuAccessRes {
+	return menuaccess.MenuAccessRes{
+		Id: sp.ID,
+		Isactive: sp.IsActive,
+		Code: sp.Code,
+		Name: sp.Name,
+		Description: sp.Description,
+	}
 }
 
 type SecurityRolePermission struct {
